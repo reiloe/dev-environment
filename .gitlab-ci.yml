@@ -13,6 +13,7 @@ lint-scripts-and-docs:
     - shellcheck start.sh stop.sh
     - python3 -m json.tool pgadmin/servers.json > /dev/null
     - python3 -m json.tool grafana/provisioning/dashboards/prometheus-overview.json > /dev/null
+    - python3 -m json.tool seaweedfs/s3.json > /dev/null
 
 lint-dockerfile:
   stage: lint

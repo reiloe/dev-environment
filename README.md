@@ -15,7 +15,7 @@
 ![Eclipse Mosquitto](https://img.shields.io/badge/Mosquitto-3C5280?style=for-the-badge&logo=eclipsemosquitto&logoColor=white)
 ![Mailpit](https://img.shields.io/badge/Mailpit-Fake_SMTP-0078D4?style=for-the-badge&logo=maildotru&logoColor=white)
 
-![MinIO](https://img.shields.io/badge/MinIO-C72E49?style=for-the-badge&logo=minio&logoColor=white)
+![SeaweedFS](https://img.shields.io/badge/SeaweedFS-S3_Storage-2E8B57?style=for-the-badge&logo=amazons3&logoColor=white)
 ![LocalStack](https://img.shields.io/badge/LocalStack-AWS_Emulator-232F3E?style=for-the-badge&logo=amazonwebservices&logoColor=white)
 ![Keycloak](https://img.shields.io/badge/Keycloak-OIDC-4D4D4D?style=for-the-badge&logo=keycloak&logoColor=white)
 
@@ -56,7 +56,7 @@ A modular, multi-architecture (`linux/arm64` for Apple Silicon & `linux/amd64`) 
 | `mailpit`, `monitoring` | **Mailpit (Fake SMTP)** | `dev-mailpit` | `1025`, `8025` | `http://localhost:8025` | SMTP: `localhost:1025` (any auth accepted) |
 | `registry` | **Docker Registry** | `dev-registry` | `5050` | `localhost:5050` | Push via `docker push localhost:5050/<image>` |
 | `registry` | **Docker Registry UI** | `dev-registry-ui` | `8091` | `http://localhost:8091` | Browse & delete local images |
-| `minio` | **MinIO (S3 Storage)** | `dev-minio` | `9002`, `9003` | API: `9002` / UI: `http://localhost:9003` | `admin` / `secretpassword` |
+| `seaweedfs` | **SeaweedFS (S3 Storage)** | `dev-seaweedfs` | `9002`, `9003` | S3: `9002` / UI: `http://localhost:9003` | Access/Secret: `admin` / `secretpassword` |
 | `localstack` | **LocalStack (AWS)** | `dev-localstack` | `4566` | `http://localhost:4566` | Dummy AWS credentials (`test` / `test`) |
 | `keycloak` | **Keycloak (OIDC)** | `dev-keycloak` | `8086` | `http://localhost:8086` | `admin` / `secretpassword` |
 | `nexus` | **Sonatype Nexus** | `dev-nexus` | `8087`, `8088` | `http://localhost:8087` | `admin` / password in `/nexus-data/admin.password` |
@@ -180,6 +180,8 @@ dev-environment/
 ├── scripts/
 │   ├── pre-commit
 │   └── update-tree.py
+├── seaweedfs/
+│   └── s3.json
 ├── .env.example
 ├── .gitignore
 ├── .gitlab-ci.yml
