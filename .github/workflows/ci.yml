@@ -1,0 +1,39 @@
+name: Infrastructure Validation CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  validate-infrastructure:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Verify README Project Tree
+        run: |
+          python3 scripts/update-tree.py
+          git diff --exit-code README.md
+
+      - name: Lint Shell Scripts (ShellCheck)
+        run: shellcheck start.sh stop.sh
+
+      - name: Lint Jenkins Dockerfile (Hadolint)
+        uses: hadolint/hadolint-action@v3.1.0
+        with:
+          dockerfile: jenkins/Dockerfile
+
+      - name: Validate JSON & YAML Configs
+        run: |
+          python3 -m json.tool pgadmin/servers.json > /dev/null
+          python3 -m json.tool grafana/provisioning/dashboards/prometheus-overview.json > /dev/null
+
+      - name: Validate Docker Compose & All Profiles
+        run: |
+          cp .env.example .env
+          docker compose --profile "*" config --quiet
+
+      - name: Test Build Custom Jenkins Image
+        run: docker compose --profile jenkins build

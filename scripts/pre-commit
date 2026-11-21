@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+set -e
+
+echo "🔍 Running pre-commit infrastructure checks..."
+
+# 1. Keep directory tree in README.md up to date
+if [ -f "scripts/update-tree.py" ]; then
+  python3 scripts/update-tree.py
+  git add README.md
+fi
+
+# 2. Validate JSON configuration files
+echo "  -> Validating JSON configs..."
+python3 -m json.tool pgadmin/servers.json > /dev/null
+python3 -m json.tool grafana/provisioning/dashboards/prometheus-overview.json > /dev/null
+
+# 3. Validate Docker Compose file & all profiles (if Docker daemon is running)
+if command -v docker &> /dev/null && docker info &> /dev/null; then
+  echo "  -> Validating docker-compose.yml profiles..."
+  docker compose --profile "*" config --quiet
+fi
+
+# 4. Lint shell scripts (if shellcheck is installed, e.g. via 'brew install shellcheck')
+if command -v shellcheck &> /dev/null; then
+  echo "  -> Linting shell scripts with shellcheck..."
+  shellcheck start.sh stop.sh scripts/pre-commit
+fi
+
+# 5. Lint Dockerfile (if hadolint is installed, e.g. via 'brew install hadolint')
+if command -v hadolint &> /dev/null; then
+  echo "  -> Linting jenkins/Dockerfile with hadolint..."
+  hadolint jenkins/Dockerfile
+fi
+
+echo "✅ All pre-commit checks passed!"

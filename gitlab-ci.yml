@@ -1,0 +1,28 @@
+stages:
+  - lint
+  - validate
+
+lint-scripts-and-docs:
+  stage: lint
+  image: python:3.12-slim
+  before_script:
+    - apt-get update && apt-get install -y --no-install-recommends git shellcheck
+  script:
+    - python3 scripts/update-tree.py
+    - git diff --exit-code README.md
+    - shellcheck start.sh stop.sh
+    - python3 -m json.tool pgadmin/servers.json > /dev/null
+    - python3 -m json.tool grafana/provisioning/dashboards/prometheus-overview.json > /dev/null
+
+lint-dockerfile:
+  stage: lint
+  image: hadolint/hadolint:latest-debian
+  script:
+    - hadolint jenkins/Dockerfile
+
+validate-compose:
+  stage: validate
+  image: docker:27-cli
+  script:
+    - cp .env.example .env
+    - docker compose --profile "*" config --quiet
