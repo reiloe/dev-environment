@@ -91,10 +91,10 @@ while true; do
         ;;
     esac
   elif [[ "$key" == " " ]]; then
-    if [[ "${SELECTED[$CURSOR]}" == "true" ]]; then
-      SELECTED[$CURSOR]=false
+    if [[ "${SELECTED[CURSOR]}" == "true" ]]; then
+      SELECTED[CURSOR]=false
     else
-      SELECTED[$CURSOR]=true
+      SELECTED[CURSOR]=true
     fi
   elif [[ "$key" == "" ]]; then
     break
