@@ -182,8 +182,8 @@ dev-environment/
 │   └── update-tree.py
 ├── .env.example
 ├── .gitignore
+├── .gitlab-ci.yml
 ├── docker-compose.yml
-├── gitlab-ci.yml
 ├── LICENSE
 ├── README.md
 ├── start.sh
