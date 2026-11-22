@@ -429,4 +429,5 @@ volumes:
 
 networks:
   dev-net:
+    name: dev-net
     driver: bridge
