@@ -1,0 +1,44 @@
+{
+  "realm": "dev-control-center",
+  "enabled": true,
+  "roles": {
+    "realm": [
+      { "name": "ADMIN" },
+      { "name": "VIEWER" }
+    ]
+  },
+  "clients": [
+    {
+      "clientId": "control-center-frontend",
+      "publicClient": true,
+      "standardFlowEnabled": true,
+      "directAccessGrantsEnabled": true,
+      "redirectUris": ["http://localhost:5173/*"],
+      "webOrigins": ["http://localhost:5173"]
+    }
+  ],
+  "users": [
+    {
+      "username": "admin-user",
+      "enabled": true,
+      "email": "admin@example.com",
+      "firstName": "Admin",
+      "lastName": "User",
+      "credentials": [
+        { "type": "password", "value": "admin123", "temporary": false }
+      ],
+      "realmRoles": ["ADMIN", "VIEWER"]
+    },
+    {
+      "username": "viewer-user",
+      "enabled": true,
+      "email": "viewer@example.com",
+      "firstName": "Viewer",
+      "lastName": "User",
+      "credentials": [
+        { "type": "password", "value": "viewer123", "temporary": false }
+      ],
+      "realmRoles": ["VIEWER"]
+    }
+  ]
+}

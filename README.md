@@ -58,7 +58,7 @@ A modular, multi-architecture (`linux/arm64` for Apple Silicon & `linux/amd64`) 
 | `registry` | **Docker Registry UI** | `dev-registry-ui` | `8091` | `http://localhost:8091` | Browse & delete local images |
 | `seaweedfs` | **SeaweedFS (S3 Storage)** | `dev-seaweedfs` | `9002`, `9003` | S3: `9002` / UI: `http://localhost:9003` | Access/Secret: `admin` / `secretpassword` |
 | `localstack` | **LocalStack (AWS)** | `dev-localstack` | `4566` | `http://localhost:4566` | Dummy AWS credentials (`test` / `test`) |
-| `keycloak` | **Keycloak (OIDC)** | `dev-keycloak` | `8086` | `http://localhost:8086` | `admin` / `secretpassword` |
+| `keycloak` | **Keycloak (OIDC)** | `dev-keycloak` | `8086` | `http://localhost:8086` | Admin: `admin` / `secretpassword` (auto-imports `dev-control-center` realm) |
 | `nexus` | **Sonatype Nexus** | `dev-nexus` | `8087`, `8088` | `http://localhost:8087` | `admin` / password in `/nexus-data/admin.password` |
 | `vault` | **HashiCorp Vault** | `dev-vault` | `8200` | `http://localhost:8200` | Token: `dev-root-token` |
 | `zap` | **OWASP ZAP (DAST)** | `dev-zap` | `8090` | `http://localhost:8090` | Webswing Security Scanner UI |
@@ -170,6 +170,8 @@ dev-environment/
 │       └── datasources.yml
 ├── jenkins/
 │   └── Dockerfile
+├── keycloak/
+│   └── realm-export.json
 ├── mosquitto/config/
 │   └── mosquitto.conf
 ├── pgadmin/
