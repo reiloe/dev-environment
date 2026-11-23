@@ -1,8 +1,8 @@
 # Local Dev Environment (Docker Compose Stack)
 
-![Forgejo](https://img.shields.io/badge/Forgejo-Git_Forge-FB923C?style=for-the-badge&logo=forgejo&logoColor=white)
-
 ![BookStack](https://img.shields.io/badge/BookStack-Documentation_Wiki-0288D1?style=for-the-badge&logo=bookstack&logoColor=white)
+
+![Forgejo](https://img.shields.io/badge/Forgejo-Git_Forge-FB923C?style=for-the-badge&logo=forgejo&logoColor=white)
 [![GitHub Actions CI](https://img.shields.io/github/actions/workflow/status/reiloe/dev-environment/ci.yml?branch=main&style=for-the-badge&logo=github&label=GitHub%20CI)](https://github.com/reiloe/dev-environment/actions/workflows/ci.yml)
 [![GitLab Pipeline Status](https://img.shields.io/gitlab/pipeline-status/reilo2401%2Fdev-environment?branch=main&style=for-the-badge&logo=gitlab&label=GitLab%20CI)](https://gitlab.com/reilo2401/dev-environment/-/pipelines)
 
