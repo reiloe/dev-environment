@@ -2,6 +2,8 @@
 set -e
 
 OPTIONS=(
+  "Forgejo (Local GitHub/Gitea Alternative)"
+  "BookStack (Confluence-Style Documentation Wiki)"
   "MariaDB + Adminer (SQL Database & Web UI)"
   "MongoDB + Mongo Express (NoSQL & Web UI)"
   "PostgreSQL + pgAdmin (SQL Database & Web UI)"
@@ -22,6 +24,8 @@ OPTIONS=(
 )
 
 PROFILES=(
+  "git"
+  "docs"
   "mariadb"
   "mongodb"
   "postgres"
@@ -41,7 +45,7 @@ PROFILES=(
   "all"
 )
 
-SELECTED=(false false false false false false false false false false false false false false false false false)
+SELECTED=(false false false false false false false false false false false false false false false false false false false)
 
 
 CURSOR=0

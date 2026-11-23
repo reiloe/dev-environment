@@ -1,5 +1,8 @@
 # Local Dev Environment (Docker Compose Stack)
 
+![Forgejo](https://img.shields.io/badge/Forgejo-Git_Forge-FB923C?style=for-the-badge&logo=forgejo&logoColor=white)
+
+![BookStack](https://img.shields.io/badge/BookStack-Documentation_Wiki-0288D1?style=for-the-badge&logo=bookstack&logoColor=white)
 [![GitHub Actions CI](https://img.shields.io/github/actions/workflow/status/reiloe/dev-environment/ci.yml?branch=main&style=for-the-badge&logo=github&label=GitHub%20CI)](https://github.com/reiloe/dev-environment/actions/workflows/ci.yml)
 [![GitLab Pipeline Status](https://img.shields.io/gitlab/pipeline-status/reilo2401%2Fdev-environment?branch=main&style=for-the-badge&logo=gitlab&label=GitLab%20CI)](https://gitlab.com/reilo2401/dev-environment/-/pipelines)
 
@@ -38,6 +41,8 @@ A modular, multi-architecture (`linux/arm64` for Apple Silicon & `linux/amd64`) 
 | Profile | Service | Container Name | Default Port(s) | Web UI / Endpoint | Default Credentials |
 | :--- | :--- | :--- | :--- | :--- | :--- |
 | *(always active)* | **Portainer CE (Docker UI)** | `dev-portainer` | `9443`, `8000` | `https://localhost:9443` | Create admin user on first visit |
+| `git` | **Forgejo + DinD + Actions Runner** | `dev-forgejo`, `dev-forgejo-dind`, `dev-forgejo-runner` | `3001`, `2222` | `http://localhost:3001` | Local GitHub/Gitea alternative with built-in CI/CD Actions runner |
+| `docs` | **BookStack (Confluence-Style Wiki)** | `dev-bookstack`, `dev-bookstack-db` | `8089` | `http://localhost:8089` | Default login: `admin@admin.com` / `password` |
 | `jenkins` | **Jenkins (CI/CD)** | `dev-jenkins` | `8085`, `50000` | `http://localhost:8085` | Initial Admin Password via Container Logs |
 | `sonarqube` | **SonarQube** | `dev-sonarqube` | `9000` | `http://localhost:9000` | `admin` / `admin` (change on first login) |
 | `monitoring` | **Grafana** | `dev-grafana` | `3000` | `http://localhost:3000` | `admin` / `secretpassword` |

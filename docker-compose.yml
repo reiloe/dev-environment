@@ -1,7 +1,5 @@
 services:
-  # ==========================================
-  # Core Management UI (Startet immer mit)
-  # ==========================================
+
   portainer:
     image: portainer/portainer-ce:lts
     container_name: dev-portainer
@@ -14,6 +12,99 @@ services:
       - portainer_data:/data
     networks:
       - dev-net
+
+  forgejo:
+    image: codeberg.org/forgejo/forgejo:11
+    container_name: dev-forgejo
+    profiles: [ "git" ]
+    restart: unless-stopped
+    ports:
+      - "${FORGEJO_PORT:-3001}:3000"
+      - "${FORGEJO_SSH_PORT:-2222}:22"
+    environment:
+      USER_UID: 1000
+      USER_GID: 1000
+      FORGEJO__server__DOMAIN: localhost
+      FORGEJO__server__ROOT_URL: http://localhost:${FORGEJO_PORT:-3001}/
+      FORGEJO__server__SSH_PORT: ${FORGEJO_SSH_PORT:-2222}
+    volumes:
+      - forgejo_data:/data
+    networks:
+      - dev-net
+
+  forgejo-dind:
+    image: docker:28-dind
+    container_name: dev-forgejo-dind
+    profiles: [ "git" ]
+    privileged: true
+    restart: unless-stopped
+    environment:
+      DOCKER_TLS_CERTDIR: /certs
+    volumes:
+      - forgejo_dind_certs:/certs
+      - forgejo_runner_data:/data
+    networks:
+      - dev-net
+
+  forgejo-runner:
+    image: code.forgejo.org/forgejo/runner:13
+    container_name: dev-forgejo-runner
+    profiles: ["git"]
+    restart: unless-stopped
+    working_dir: /data
+    depends_on:
+      - forgejo-dind
+      - forgejo
+    environment:
+      DOCKER_HOST: tcp://forgejo-dind:2376
+      DOCKER_CERT_PATH: /certs/client
+      DOCKER_TLS_VERIFY: "1"
+    volumes:
+      - forgejo_runner_data:/data
+    command: sh -c "while [ ! -f /data/.runner ]; do echo 'Waiting for runner registration...'; sleep 5; done; forgejo-runner daemon"
+    networks:
+      - dev-net
+
+  bookstack-db:
+    image: mariadb:11-noble
+    container_name: dev-bookstack-db
+    profiles: [ "docs" ]
+    restart: unless-stopped
+    environment:
+      MARIADB_ROOT_PASSWORD: ${BOOKSTACK_DB_ROOT_PASSWORD:-secretpassword}
+      MARIADB_DATABASE: ${BOOKSTACK_DB_NAME:-bookstackapp}
+      MARIADB_USER: ${BOOKSTACK_DB_USER:-bookstack}
+      MARIADB_PASSWORD: ${BOOKSTACK_DB_PASSWORD:-secretpassword}
+    volumes:
+      - bookstack_db_data:/var/lib/mysql
+    networks:
+      - dev-net
+
+  bookstack:
+    image: lscr.io/linuxserver/bookstack:latest
+    container_name: dev-bookstack
+    profiles: [ "docs" ]
+    restart: unless-stopped
+    ports:
+      - "${BOOKSTACK_PORT:-8089}:80"
+    environment:
+      PUID: 1000
+      PGID: 1000
+      TZ: Europe/Berlin
+      APP_URL: http://localhost:${BOOKSTACK_PORT:-8089}
+      APP_KEY: base64:u7xK9pL2mN4qR8vW1yZ5aB3cD6eF0gH9jK2lM4nP7qR=
+      DB_HOST: bookstack-db
+      DB_PORT: 3306
+      DB_USERNAME: ${BOOKSTACK_DB_USER:-bookstack}
+      DB_PASSWORD: ${BOOKSTACK_DB_PASSWORD:-secretpassword}
+      DB_DATABASE: ${BOOKSTACK_DB_NAME:-bookstackapp}
+    volumes:
+      - bookstack_data:/config
+    depends_on:
+      - bookstack-db
+    networks:
+      - dev-net
+
 
   jenkins:
     build:
@@ -405,6 +496,11 @@ services:
 
 volumes:
   portainer_data:
+  forgejo_data:
+  forgejo_dind_certs:
+  forgejo_runner_data:
+  bookstack_db_data:
+  bookstack_data:
   redis_data:
   redisinsight_data:
   mosquitto_data:
