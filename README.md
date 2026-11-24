@@ -196,7 +196,8 @@ dev-environment/
 ├── LICENSE
 ├── README.md
 ├── start.sh
-└── stop.sh
+├── stop.sh
+└── test.sh
 ```
 <!-- TREE_END -->
 
