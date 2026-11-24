@@ -44,7 +44,9 @@ services:
       - forgejo_dind_certs:/certs
       - forgejo_runner_data:/data
     networks:
-      - dev-net
+      dev-net:
+         aliases:
+           - docker
 
   forgejo-runner:
     image: code.forgejo.org/forgejo/runner:13
@@ -56,12 +58,18 @@ services:
       - forgejo-dind
       - forgejo
     environment:
-      DOCKER_HOST: tcp://forgejo-dind:2376
+      DOCKER_HOST: tcp://docker:2376
       DOCKER_CERT_PATH: /certs/client
       DOCKER_TLS_VERIFY: "1"
     volumes:
       - forgejo_runner_data:/data
-    command: sh -c "while [ ! -f /data/.runner ]; do echo 'Waiting for runner registration...'; sleep 5; done; forgejo-runner daemon"
+      - forgejo_dind_certs:/certs:ro
+    command: >
+      sh -c "
+      while [ ! -f /data/.runner ]; do echo 'Waiting for runner registration...'; sleep 5; done;
+      while [ ! -f /certs/client/ca.pem ]; do echo 'Waiting for DinD TLS certs...'; sleep 2; done;
+      forgejo-runner daemon
+      "
     networks:
       - dev-net
 
